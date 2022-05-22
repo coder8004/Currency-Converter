@@ -84,12 +84,12 @@ class Main(tk.Tk):
             newwin.minsize(400,300)
             newcanvas = Canvas(newwin, height = 400, width = 300)
             newcanvas.pack()
-            newframe = Frame(newwin, bg ="yellow")
+            newframe = Frame(newwin, bg ="green")
             newframe.place(relwidth = 1, relheight = 1)
-            newlabel = Label(newframe, font = ("Comic Sans MS", 11, "bold"), fg ="#001a4d", anchor = "nw", justify = "left", bd =4)
+            newlabel = Label(newframe, font = ("font", 11, "bold"), fg ="#001a4d", anchor = "nw", justify = "left", bd =4)
             newlabel.place(relx = 0.05, rely = 0.05,relwidth = 0.90, relheight = 0.90)
             newlabel["text"] = "Abbrevations:\nBTC - Bitcoin\nUSD - USD Dollar\nEUR - Euro\nJPY - Japnese Yen\nGBP - Pound Sterling\nAUD - Australian Dollar\nCAD - Canadian Dollar\nCHF - Swiss Frank\nINR - Indian Rupees\nRUB - Russian Rubble\nCNY - Chinese Yuan"
-            newbutton = Button(newframe, text = "Back",font = ("Comic Sans MS", 11, "bold"),  bg = "pink", fg = "black", activeforeground = "pink", activebackground = "black", command = lambda:newwin.destroy())
+            newbutton = Button(newframe, text = "Back",font = ("font", 11, "bold"),  bg = "pink", fg = "black", activeforeground = "pink", activebackground = "black", command = lambda:newwin.destroy())
             newbutton.place(relx = 0.76, rely = 0.82, relwidth = 0.14, relheight = 0.11)
             newwin.mainloop()
 
