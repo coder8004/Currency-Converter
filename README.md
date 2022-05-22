@@ -14,7 +14,7 @@ Group ID: XXX
 
 
 ## Introduction
-This project is part of the mandatory curriculum of the course "7,789 | 8,789 Skills: Programming with Advanced Computer Languages” supervised by Dr. Mario Silic at the University of St. Gallen. It was created by a group of students consisting of six people namely Sara Aeppli (15-XXX-XXX), Kimberly ANG Xiuqi, Luis Contreras, Florian Grob, Marc Wallach,  (XXX), ... 
+This project is part of the mandatory curriculum of the course "7,789 | 8,789 Skills: Programming with Advanced Computer Languages” supervised by Dr. Mario Silic at the University of St. Gallen. It was created by a group of students consisting of six people namely Sara Aeppli (15-XXX-XXX), Kimberly ANG Xiuqi, Cornel Bienz, Luis Contreras, Florian Grob, Marc Wallach. 
 
 
 ## Project-Description
@@ -25,6 +25,7 @@ However we adjusted a few things:
 * Fonts (from XX to calibri)
 * Bottoms 
 * Titel: added "by Moneycounters" 
+* Sizes of Boxes/fields/labels
 
 Additionally, we added a few things:
 * Time Stamp next to the date
