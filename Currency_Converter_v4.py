@@ -272,7 +272,7 @@ ZAR - South African Rand
 ZMW - Zambian Kwacha
 ZWL - Zimbabwean Dollar""",)
             
-            #format text in text widget
+            #format text font and as read-only in text widget
             text_widget.configure(font = (font, 11),fg='green', state = 'disabled')
             
             #create 'back' button in new window to return to main window
