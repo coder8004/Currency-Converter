@@ -88,7 +88,7 @@ class Main(tk.Tk):
             newcanvas.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
             newframe = Frame(newwin, bg ="green")
             newframe.place(relwidth = 1, relheight = 1)
-            newlabel = Label(newframe, font = (font, 11), fg ="green", anchor = "nw", justify = "left", bd =4)
+            newlabel = Label(newframe, fg ="green", anchor = "nw", justify = "left", bd =4)
             newlabel.place(relx = 0.05, rely = 0.05,relwidth = 0.90, relheight = 0.90)            
 
             # Create the text widget
