@@ -18,7 +18,7 @@ This project is part of the mandatory curriculum of the course "7,789 | 8,789 Sk
 
 
 ## Project-Description
-The base of the code is an exsisting one: 
+The base of the code is an existing one: 
 ...
 
 
