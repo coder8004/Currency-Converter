@@ -3,7 +3,6 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
 import tkinter as tk
-import tkinter.scrolledtext as st
 import requests
 import datetime as dt
 
