@@ -12,7 +12,6 @@ Group ID: XXX
 * [Source](#Source)
 
 
-
 ## Introduction
 This project is part of the mandatory curriculum of the course "7,789 | 8,789 Skills: Programming with Advanced Computer Languages” supervised by Dr. Mario Silic at the University of St. Gallen. It was created by a group of students consisting of six people namely Sara Aeppli (15-XXX-XXX), Kimberly ANG Xiuqi, Cornel Bienz, Luis Contreras, Florian Grob, Marc Wallach. 
 
@@ -25,7 +24,9 @@ However we adjusted a few things:
 * Fonts (from XX to calibri)
 * Bottoms 
 * Titel: added "by Moneycounters" 
-* Sizes of Boxes/fields/labels
+* Sizes of boxes/fields/labels
+* Places of the boxes/fields/labels
+* changed the displayed decimal places to 3 
 
 Additionally, we added a few things:
 * Time Stamp next to the date
@@ -38,10 +39,11 @@ The following programs were used to analyse and test the code:
 
 The following packages and modules are REQUIRED to run the code: 
 * tkinter
-...
+* requests
+* datetime
 
 ## How-does-it-work?
-...
+First a few packages and modules need to be required to 
 
 ## Sources
 * https://github.com/MBobyPratama/Currency-Converter-Tkinter/blob/master/Currency_Converter.py
