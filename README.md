@@ -14,13 +14,20 @@ Group ID: XXX
 
 
 ## Introduction
-This project is part of the mandatory curriculum of the course "7,789 | 8,789 Skills: Programming with Advanced Computer Languages” supervised by Dr. Mario Silic at the University of St. Gallen. It was created by a group of students consisting of six people namely XXX (XXX), ... Sara Aeppli (15- and XX
+This project is part of the mandatory curriculum of the course "7,789 | 8,789 Skills: Programming with Advanced Computer Languages” supervised by Dr. Mario Silic at the University of St. Gallen. It was created by a group of students consisting of six people namely Sara Aeppli (15-XXX-XXX), Kimberly ANG Xiuqi, Luis Contreras, Florian Grob, Marc Wallach,  (XXX), ... 
 
 
 ## Project-Description
 The base of the code is an existing one: 
-...
 
+However we adjusted a few things:
+* Background color (from grey to green) in all party of the converter
+* Fonts (from XX to calibri)
+* Bottoms 
+* Titel: added "by Moneycounters" 
+
+Additionally, we added a few things:
+* Time Stamp next to the date
 
 ## Installations
 The following programs were used to analyse and test the code:
