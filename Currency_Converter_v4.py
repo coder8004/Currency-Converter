@@ -318,7 +318,7 @@ ZWL - Zimbabwean Dollar""",)
 
         # Create warning message box
         except ValueError:
-            convert_error = messagebox.showwarning('WARNING!', 'Please Fill the Amount Field (integer only)!')
+            convert_error = messagebox.showwarning('WARNING!', "Sorry, that's an invalid entry\nPlease use integers or decimals")
             return convert_error
 
 
