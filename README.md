@@ -69,7 +69,10 @@ Last
 * https://www.xe.com/
 * https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
 * https://copyassignment.com/currency-converter-desktop-application-in-python/
-
+* https://www.askpython.com/python-modules/tkinter/tkinter-text-widget-tkinter-scrollbar
+* https://openexchangerates.org/api/currencies.json
+* https://www.delftstack.com/howto/python-tkinter/how-to-set-font-of-tkinter-text-widget/
+* https://stackhowto.com/how-to-make-tkinter-text-widget-read-only/
 
 
 
