@@ -29,17 +29,17 @@ The following programs were used to analyse and test the code:
 * Jupyter Notebook and VS Code (visual studio code - program)
 
 The following packages and modules are REQUIRED to run the code: 
-
+* tkinter
 ...
 
 ## How-does-it-work?
 ...
 
 ## Sources
-https://github.com/MBobyPratama/Currency-Converter-Tkinter/blob/master/Currency_Converter.py
-https://pytutorial.com/get-capital-currency-python
-https://www.xe.com/
-https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
+* https://github.com/MBobyPratama/Currency-Converter-Tkinter/blob/master/Currency_Converter.py
+* https://pytutorial.com/get-capital-currency-python
+* https://www.xe.com/
+* https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
 
 
 
