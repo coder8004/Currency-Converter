@@ -1,377 +1,326 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "1780b261-53fa-467c-a9fc-b96bbf2d1be3",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "dd10cdef-2876-44c0-9393-e7a82c40e135",
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# Import required modules\n",
-    "from tkinter import *\n",
-    "from tkinter import ttk\n",
-    "from tkinter import messagebox\n",
-    "import tkinter as tk\n",
-    "import requests\n",
-    "import datetime as dt\n",
-    "\n",
-    "\n",
-    "# Program to convert a given amount to another currency with real-time data for rates\n",
-    "class CurrencyConverter:\n",
-    "\n",
-    "    def __init__(self, url):\n",
-    "        self.url = 'https://api.exchangerate.host/latest'\n",
-    "        self.response = requests.get(url)\n",
-    "        self.data = self.response.json()\n",
-    "        self.rates = self.data.get('rates')\n",
-    "\n",
-    "        #Convert()-method: Base-currency set as CHF, convert the amount into CHF, cross multiplication between the amount and the rate\n",
-    "    def convert(self, amount, base_currency, des_currency):\n",
-    "        if base_currency != 'CHF':\n",
-    "            amount = amount/self.rates[base_currency]\n",
-    "\n",
-    "        # Limiting the result to 3 decimal places\n",
-    "        amount = round(amount*self.rates[des_currency], 3)\n",
-    "        # Add comma every 3 numbers\n",
-    "        amount = '{:,}'.format(amount)\n",
-    "        return amount\n",
-    "\n",
-    "# Main window\n",
-    "class Main(tk.Tk):\n",
-    "\n",
-    "    def __init__(self, converter):\n",
-    "\n",
-    "        # Create frame with title 'Currency Converter'\n",
-    "        tk.Tk.__init__(self)\n",
-    "        self.title('Currency Converter by MoneyCounters')\n",
-    "        self.geometry('400x550')\n",
-    "        self.config(bg='#187141')\n",
-    "        self.CurrencyConverter = converter\n",
-    "        font = (\"cochin\")\n",
-    "\n",
-    "        # Create title label\n",
-    "        self.title_label = Label(self, text='Currency Converter by MoneyCounters', bg='#2363A2', fg='white', font=(font, 18, \"bold\"), width=33, height=3, relief='ridge')\n",
-    "\n",
-    "        # Create date label\n",
-    "        self.date_label = Label(self, text=\"Rates as of:\\n\" + f'{dt.datetime.now():%A, %B %d, %Y, %H : %M : %S}', bg='#187141', fg='white', font=(font, 12))\n",
-    "\n",
-    "        # Create amount label\n",
-    "        self.amount_label = Label(self, text='Convert Amount: ', bg='#187141', fg='white', font=(font, 15))\n",
-    "\n",
-    "        # Create amount entry box\n",
-    "        self.amount_entry = Entry(self)\n",
-    "        self.amount_entry.config(width=15)\n",
-    "\n",
-    "        # Create 'from' label\n",
-    "        self.base_currency_label = Label(self, text='From Currency: ', bg='#187141', fg='white', font=(font, 15))\n",
-    "\n",
-    "        # Create 'to' label\n",
-    "        self.destination_currency_label = Label(self, text='To Currency: ', bg='#187141', fg='white', font=(font, 15))\n",
-    "\n",
-    "        # Create dropdown menus\n",
-    "        self.currency_variable1 = StringVar(self)\n",
-    "        self.currency_variable2 = StringVar(self)\n",
-    "        self.currency_variable1.set('CHF')\n",
-    "        self.currency_variable2.set('USD')\n",
-    "\n",
-    "        self.currency_combobox1 = ttk.Combobox(self, width=10, textvariable=self.currency_variable1, values=list(self.CurrencyConverter.rates.keys()), state='readonly')\n",
-    "        self.currency_combobox2 = ttk.Combobox(self, width=10, textvariable=self.currency_variable2, values=list(self.CurrencyConverter.rates.keys()), state='readonly')\n",
-    "\n",
-    "        # Create 'convert' button\n",
-    "        self.convert_button = Button(self, text='Convert', fg='black', width=7, command=self.processed)\n",
-    "\n",
-    "        # Create converted result field\n",
-    "        self.final_result = Label(self, text='', bg='white', fg='#187141', font=(font, 15, \"bold\"), relief='sunken', width=35, height=2)\n",
-    "\n",
-    "        # Create 'clear' button\n",
-    "        self.clear_button = Button(self, text='Clear All', fg='black',width=7, command=self.clear)\n",
-    "        \n",
-    "        # Create 'help' button for abbreviations of currency symbols\n",
-    "        #First, create new window that displays the abbreviations\n",
-    "        def help():\n",
-    "            newwin = Tk()\n",
-    "            newwin.title(\"Reference\")\n",
-    "            newwin.maxsize(400,300)\n",
-    "            newwin.minsize(400,300)\n",
-    "            newcanvas = Canvas(newwin, height = 400, width = 300)\n",
-    "            newcanvas.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)\n",
-    "            newframe = Frame(newwin, bg =\"#187141\")\n",
-    "            newframe.place(relwidth = 1, relheight = 1)\n",
-    "            newlabel = Label(newframe, fg =\"#187141\", anchor = \"nw\", justify = \"left\", bd =4)\n",
-    "            newlabel.place(relx = 0.05, rely = 0.05,relwidth = 0.90, relheight = 0.90)            \n",
-    "\n",
-    "            # Create the text widget\n",
-    "            text_widget = tk.Text(newlabel, height=200, width=100)\n",
-    "\n",
-    "            # Pack it into our tkinter application\n",
-    "            text_widget.pack()\n",
-    "\n",
-    "            # Insert explanations of currency symbols into the text widget\n",
-    "           \n",
-    "            text_widget.insert(tk.END,\"\"\"ABBREVIATIONS:\n",
-    "AED - United Arab Emirates Dirham\n",
-    "AFN - Afghan Afghani\n",
-    "ALL - Albanian Lek\n",
-    "AMD - Armenian Dram\n",
-    "ANG - Netherlands Antillean Guilder\n",
-    "AOA - Angolan Kwanza\n",
-    "ARS - Argentine Peso\n",
-    "AUD - Australian Dollar\n",
-    "AWG - Aruban Florin\n",
-    "AZN - Azerbaijani Manat\n",
-    "BAM - Bosnia -Herzegovina Convertible Mark\n",
-    "BBD - Barbadian Dollar\n",
-    "BDT - Bangladeshi Taka\n",
-    "BGN - Bulgarian Lev\n",
-    "BHD - Bahraini Dinar\n",
-    "BIF - Burundian Franc\n",
-    "BMD - Bermudan Dollar\n",
-    "BND - Brunei Dollar\n",
-    "BOB - Bolivian Boliviano\n",
-    "BRL - Brazilian Real\n",
-    "BSD - Bahamian Dollar\n",
-    "BTC - Bitcoin\n",
-    "BTN - Bhutanese Ngultrum\n",
-    "BWP - Botswanan Pula\n",
-    "BYN - Belarusian Ruble\n",
-    "BZD - Belize Dollar\n",
-    "CAD - Canadian Dollar\n",
-    "CDF - Congolese Franc\n",
-    "CHF - Swiss Franc\n",
-    "CLF - Chilean Unit of Account (UF)\n",
-    "CLP - Chilean Peso\n",
-    "CNH - Chinese Yuan (Offshore)\n",
-    "CNY - Chinese Yuan\n",
-    "COP - Colombian Peso\n",
-    "CRC - Costa Rican Colón\n",
-    "CUC - Cuban Convertible Peso\n",
-    "CUP - Cuban Peso\n",
-    "CVE - Cape Verdean Escudo\n",
-    "CZK - Czech Republic Koruna\n",
-    "DJF - Djiboutian Franc\n",
-    "DKK - Danish Krone\n",
-    "DOP - Dominican Peso\n",
-    "DZD - Algerian Dinar\n",
-    "EGP - Egyptian Pound\n",
-    "ERN - Eritrean Nakfa\n",
-    "ETB - Ethiopian Birr\n",
-    "EUR - Euro\n",
-    "FJD - Fijian Dollar\n",
-    "FKP - Falkland Islands Pound\n",
-    "GBP - British Pound Sterling\n",
-    "GEL - Georgian Lari\n",
-    "GGP - Guernsey Pound\n",
-    "GHS - Ghanaian Cedi\n",
-    "GIP - Gibraltar Pound\n",
-    "GMD - Gambian Dalasi\n",
-    "GNF - Guinean Franc\n",
-    "GTQ - Guatemalan Quetzal\n",
-    "GYD - Guyanaese Dollar\n",
-    "HKD - Hong Kong Dollar\n",
-    "HNL - Honduran Lempira\n",
-    "HRK - Croatian Kuna\n",
-    "HTG - Haitian Gourde\n",
-    "HUF - Hungarian Forint\n",
-    "IDR - Indonesian Rupiah\n",
-    "ILS - Israeli New Sheqel\n",
-    "IMP - Manx pound\n",
-    "INR - Indian Rupee\n",
-    "IQD - Iraqi Dinar\n",
-    "IRR - Iranian Rial\n",
-    "ISK - Icelandic Króna\n",
-    "JEP - Jersey Pound\n",
-    "JMD - Jamaican Dollar\n",
-    "JOD - Jordanian Dinar\n",
-    "JPY - Japanese Yen\n",
-    "KES - Kenyan Shilling\n",
-    "KGS - Kyrgystani Som\n",
-    "KHR - Cambodian Riel\n",
-    "KMF - Comorian Franc\n",
-    "KPW - North Korean Won\n",
-    "KRW - South Korean Won\n",
-    "KWD - Kuwaiti Dinar\n",
-    "KYD - Cayman Islands Dollar\n",
-    "KZT - Kazakhstani Tenge\n",
-    "LAK - Laotian Kip\n",
-    "LBP - Lebanese Pound\n",
-    "LKR - Sri Lankan Rupee\n",
-    "LRD - Liberian Dollar\n",
-    "LSL - Lesotho Loti\n",
-    "LYD - Libyan Dinar\n",
-    "MAD - Moroccan Dirham\n",
-    "MDL - Moldovan Leu\n",
-    "MGA - Malagasy Ariary\n",
-    "MKD - Macedonian Denar\n",
-    "MMK - Myanma Kyat\n",
-    "MNT - Mongolian Tugrik\n",
-    "MOP - Macanese Pataca\n",
-    "MRU - Mauritanian Ouguiya\n",
-    "MUR - Mauritian Rupee\n",
-    "MVR - Maldivian Rufiyaa\n",
-    "MWK - Malawian Kwacha\n",
-    "MXN - Mexican Peso\n",
-    "MYR - Malaysian Ringgit\n",
-    "MZN - Mozambican Metical\n",
-    "NAD - Namibian Dollar\n",
-    "NGN - Nigerian Naira\n",
-    "NIO - Nicaraguan Córdoba\n",
-    "NOK - Norwegian Krone\n",
-    "NPR - Nepalese Rupee\n",
-    "NZD - New Zealand Dollar\n",
-    "OMR - Omani Rial\n",
-    "PAB - Panamanian Balboa\n",
-    "PEN - Peruvian Nuevo Sol\n",
-    "PGK - Papua New Guinean Kina\n",
-    "PHP - Philippine Peso\n",
-    "PKR - Pakistani Rupee\n",
-    "PLN - Polish Zloty\n",
-    "PYG - Paraguayan Guarani\n",
-    "QAR - Qatari Rial\n",
-    "RON - Romanian Leu\n",
-    "RSD - Serbian Dinar\n",
-    "RUB - Russian Ruble\n",
-    "RWF - Rwandan Franc\n",
-    "SAR - Saudi Riyal\n",
-    "SBD - Solomon Islands Dollar\n",
-    "SCR - Seychellois Rupee\n",
-    "SDG - Sudanese Pound\n",
-    "SEK - Swedish Krona\n",
-    "SGD - Singapore Dollar\n",
-    "SHP - Saint Helena Pound\n",
-    "SLL - Sierra Leonean Leone\n",
-    "SOS - Somali Shilling\n",
-    "SRD - Surinamese Dollar\n",
-    "SSP - South Sudanese Pound\n",
-    "STD - São Tomé and Príncipe Dobra (pre -2018)\n",
-    "STN - São Tomé and Príncipe Dobra\n",
-    "SVC - Salvadoran Colón\n",
-    "SYP - Syrian Pound\n",
-    "SZL - Swazi Lilangeni\n",
-    "THB - Thai Baht\n",
-    "TJS - Tajikistani Somoni\n",
-    "TMT - Turkmenistani Manat\n",
-    "TND - Tunisian Dinar\n",
-    "TOP - Tongan Pa'anga\n",
-    "TRY - Turkish Lira\n",
-    "TTD - Trinidad and Tobago Dollar\n",
-    "TWD - New Taiwan Dollar\n",
-    "TZS - Tanzanian Shilling\n",
-    "UAH - Ukrainian Hryvnia\n",
-    "UGX - Ugandan Shilling\n",
-    "USD - United States Dollar\n",
-    "UYU - Uruguayan Peso\n",
-    "UZS - Uzbekistan Som\n",
-    "VEF - Venezuelan Bolívar Fuerte (Old)\n",
-    "VES - Venezuelan Bolívar Soberano\n",
-    "VND - Vietnamese Dong\n",
-    "VUV - Vanuatu Vatu\n",
-    "WST - Samoan Tala\n",
-    "XAF - CFA Franc BEAC\n",
-    "XAG - Silver Ounce\n",
-    "XAU - Gold Ounce\n",
-    "XCD - East Caribbean Dollar\n",
-    "XDR - Special Drawing Rights\n",
-    "XOF - CFA Franc BCEAO\n",
-    "XPD - Palladium Ounce\n",
-    "XPF - CFP Franc\n",
-    "XPT - Platinum Ounce\n",
-    "YER - Yemeni Rial\n",
-    "ZAR - South African Rand\n",
-    "ZMW - Zambian Kwacha\n",
-    "ZWL - Zimbabwean Dollar\"\"\",)\n",
-    "            \n",
-    "            #format text font and as read-only in text widget\n",
-    "            text_widget.configure(font = (font, 11),fg='#377E57', state = 'disabled')\n",
-    "            \n",
-    "            #create 'back' button in new window to return to main window\n",
-    "            newbutton = Button(newframe, text = \"Back\",font = (font, 11),  bg = \"pink\", fg = \"black\", activeforeground = \"pink\", activebackground = \"black\", command = lambda:newwin.destroy())\n",
-    "            newbutton.place(relx = 0.76, rely = 0.82, relwidth = 0.14, relheight = 0.11)\n",
-    "            newwin.mainloop()\n",
-    "        \n",
-    "        #create 'help' button in main window\n",
-    "        self.help_button = Button(self, text='Help', fg='black',width=7, command=help)\n",
-    "\n",
-    "        #Placing, sorted by y-axis, of labels, entry box, dropdown menu, buttons, field\n",
-    "        self.title_label.place(x=200, y=26, anchor='center')\n",
-    "        self.date_label.place(x=200, y=100, anchor='center')\n",
-    "        self.amount_label.place(x=200, y=150, anchor='center')\n",
-    "        self.amount_entry.place(x=200, y=180, anchor='center')\n",
-    "        self.base_currency_label.place(x=125, y=220, anchor='center')\n",
-    "        self.destination_currency_label.place(x=275, y=220, anchor='center')\n",
-    "        self.currency_combobox1.place(x=125, y=250, anchor='center')\n",
-    "        self.currency_combobox2.place(x=275, y=250, anchor='center')\n",
-    "        self.convert_button.place(x=200, y=300, anchor='center')\n",
-    "        self.final_result.place(x=200, y=350, anchor='center')\n",
-    "        self.clear_button.place(x=200, y=400, anchor='center')\n",
-    "        self.help_button.place (x=200, y=400, anchor = 'center')\n",
-    "\n",
-    "\n",
-    "    # Create clear function, to clear the amount field and final result field\n",
-    "    def clear(self):\n",
-    "        clear_entry = self.amount_entry.delete(0, END)\n",
-    "        clear_result = self.final_result.config(text='')\n",
-    "        return clear_entry, clear_result\n",
-    "\n",
-    "    # Create a function to perform\n",
-    "    def processed(self):\n",
-    "        try:\n",
-    "            given_amount = float(self.amount_entry.get())\n",
-    "            given_base_currency = self.currency_variable1.get()\n",
-    "            given_des_currency = self.currency_variable2.get()\n",
-    "            converted_amount = self.CurrencyConverter.convert(given_amount, given_base_currency, given_des_currency)\n",
-    "            # Add comma every 3 numbers\n",
-    "            given_amount = '{:,}'.format(given_amount)\n",
-    "\n",
-    "            self.final_result.config(text=f'{given_amount} {given_base_currency} = {converted_amount} {given_des_currency}')\n",
-    "\n",
-    "        # Create warning message box\n",
-    "        except ValueError:\n",
-    "            convert_error = messagebox.showwarning('WARNING!', 'Please Fill the Amount Field (integer only)!')\n",
-    "            return convert_error\n",
-    "\n",
-    "\n",
-    "if __name__ == '__main__':\n",
-    "    converter = CurrencyConverter('https://api.exchangerate.host/latest')\n",
-    "    Main(converter)\n",
-    "    mainloop()\n"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "6f05a3c6-e0a7-4a76-a150-51adf98ca3bc",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python 3 (ipykernel)",
-   "language": "python",
-   "name": "python3"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.9.7"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+from tkinter import *
+from tkinter import ttk
+from tkinter import messagebox
+import tkinter as tk
+import requests
+import datetime as dt
+
+
+# Program to convert a given amount to another currency with real-time data for rates
+class CurrencyConverter:
+
+    def __init__(self, url):
+        self.url = 'https://api.exchangerate.host/latest'
+        self.response = requests.get(url)
+        self.data = self.response.json()
+        self.rates = self.data.get('rates')
+
+        #Convert()-method: Base-currency set as CHF, convert the amount into CHF, cross multiplication between the amount and the rate
+    def convert(self, amount, base_currency, des_currency):
+        if base_currency != 'CHF':
+            amount = amount/self.rates[base_currency]
+
+        # Limiting the result to 3 decimal places
+        amount = round(amount*self.rates[des_currency], 3)
+        # Add comma every 3 numbers
+        amount = '{:,}'.format(amount)
+        return amount
+
+# Main window
+class Main(tk.Tk):
+
+    def __init__(self, converter):
+
+        # Create frame with title 'Currency Converter'
+        tk.Tk.__init__(self)
+        self.title('Currency Converter by MoneyCounters')
+        self.geometry('400x550')
+        self.config(bg='#187141')
+        self.CurrencyConverter = converter
+        font = ("cochin")
+
+        # Create title label
+        self.title_label = Label(self, text='Currency Converter by MoneyCounters', bg='#2363A2', fg='white', font=(font, 18, "bold"), width=33, height=3, relief='ridge')
+
+        # Create date label
+        self.date_label = Label(self, text="Rates as of:\n" + f'{dt.datetime.now():%A, %B %d, %Y, %H : %M : %S}', bg='#187141', fg='white', font=(font, 12))
+
+        # Create amount label
+        self.amount_label = Label(self, text='Convert Amount: ', bg='#187141', fg='white', font=(font, 15))
+
+        # Create amount entry box
+        self.amount_entry = Entry(self)
+        self.amount_entry.config(width=15)
+
+        # Create 'from' label
+        self.base_currency_label = Label(self, text='From Currency: ', bg='#187141', fg='white', font=(font, 15))
+
+        # Create 'to' label
+        self.destination_currency_label = Label(self, text='To Currency: ', bg='#187141', fg='white', font=(font, 15))
+
+        # Create dropdown menus
+        self.currency_variable1 = StringVar(self)
+        self.currency_variable2 = StringVar(self)
+        self.currency_variable1.set('CHF')
+        self.currency_variable2.set('USD')
+
+        self.currency_combobox1 = ttk.Combobox(self, width=10, textvariable=self.currency_variable1, values=list(self.CurrencyConverter.rates.keys()), state='readonly')
+        self.currency_combobox2 = ttk.Combobox(self, width=10, textvariable=self.currency_variable2, values=list(self.CurrencyConverter.rates.keys()), state='readonly')
+
+        # Create 'convert' button
+        self.convert_button = Button(self, text='Convert', fg='black', width=7, command=self.processed)
+
+        # Create converted result field
+        self.final_result = Label(self, text='', bg='white', fg='#187141', font=(font, 15, "bold"), relief='sunken', width=35, height=2)
+
+        # Create 'clear' button
+        self.clear_button = Button(self, text='Clear All', fg='black',width=7, command=self.clear)
+        
+        # Create 'help' button for abbreviations of currency symbols
+        #First, create new window that displays the abbreviations
+        def help():
+            newwin = Tk()
+            newwin.title("Reference")
+            newwin.maxsize(400,300)
+            newwin.minsize(400,300)
+            newcanvas = Canvas(newwin, height = 400, width = 300)
+            newcanvas.pack(fill=tk.BOTH, side=tk.LEFT, expand=True)
+            newframe = Frame(newwin, bg ="#187141")
+            newframe.place(relwidth = 1, relheight = 1)
+            newlabel = Label(newframe, fg ="#187141", anchor = "nw", justify = "left", bd =4)
+            newlabel.place(relx = 0.05, rely = 0.05,relwidth = 0.90, relheight = 0.90)            
+
+            # Create the text widget
+            text_widget = tk.Text(newlabel, height=200, width=100)
+
+            # Pack it into our tkinter application
+            text_widget.pack()
+
+            # Insert explanations of currency symbols into the text widget
+           
+            text_widget.insert(tk.END,"""ABBREVIATIONS:
+AED - United Arab Emirates Dirham
+AFN - Afghan Afghani
+ALL - Albanian Lek
+AMD - Armenian Dram
+ANG - Netherlands Antillean Guilder
+AOA - Angolan Kwanza
+ARS - Argentine Peso
+AUD - Australian Dollar
+AWG - Aruban Florin
+AZN - Azerbaijani Manat
+BAM - Bosnia -Herzegovina Convertible Mark
+BBD - Barbadian Dollar
+BDT - Bangladeshi Taka
+BGN - Bulgarian Lev
+BHD - Bahraini Dinar
+BIF - Burundian Franc
+BMD - Bermudan Dollar
+BND - Brunei Dollar
+BOB - Bolivian Boliviano
+BRL - Brazilian Real
+BSD - Bahamian Dollar
+BTC - Bitcoin
+BTN - Bhutanese Ngultrum
+BWP - Botswanan Pula
+BYN - Belarusian Ruble
+BZD - Belize Dollar
+CAD - Canadian Dollar
+CDF - Congolese Franc
+CHF - Swiss Franc
+CLF - Chilean Unit of Account (UF)
+CLP - Chilean Peso
+CNH - Chinese Yuan (Offshore)
+CNY - Chinese Yuan
+COP - Colombian Peso
+CRC - Costa Rican Colón
+CUC - Cuban Convertible Peso
+CUP - Cuban Peso
+CVE - Cape Verdean Escudo
+CZK - Czech Republic Koruna
+DJF - Djiboutian Franc
+DKK - Danish Krone
+DOP - Dominican Peso
+DZD - Algerian Dinar
+EGP - Egyptian Pound
+ERN - Eritrean Nakfa
+ETB - Ethiopian Birr
+EUR - Euro
+FJD - Fijian Dollar
+FKP - Falkland Islands Pound
+GBP - British Pound Sterling
+GEL - Georgian Lari
+GGP - Guernsey Pound
+GHS - Ghanaian Cedi
+GIP - Gibraltar Pound
+GMD - Gambian Dalasi
+GNF - Guinean Franc
+GTQ - Guatemalan Quetzal
+GYD - Guyanaese Dollar
+HKD - Hong Kong Dollar
+HNL - Honduran Lempira
+HRK - Croatian Kuna
+HTG - Haitian Gourde
+HUF - Hungarian Forint
+IDR - Indonesian Rupiah
+ILS - Israeli New Sheqel
+IMP - Manx pound
+INR - Indian Rupee
+IQD - Iraqi Dinar
+IRR - Iranian Rial
+ISK - Icelandic Króna
+JEP - Jersey Pound
+JMD - Jamaican Dollar
+JOD - Jordanian Dinar
+JPY - Japanese Yen
+KES - Kenyan Shilling
+KGS - Kyrgystani Som
+KHR - Cambodian Riel
+KMF - Comorian Franc
+KPW - North Korean Won
+KRW - South Korean Won
+KWD - Kuwaiti Dinar
+KYD - Cayman Islands Dollar
+KZT - Kazakhstani Tenge
+LAK - Laotian Kip
+LBP - Lebanese Pound
+LKR - Sri Lankan Rupee
+LRD - Liberian Dollar
+LSL - Lesotho Loti
+LYD - Libyan Dinar
+MAD - Moroccan Dirham
+MDL - Moldovan Leu
+MGA - Malagasy Ariary
+MKD - Macedonian Denar
+MMK - Myanma Kyat
+MNT - Mongolian Tugrik
+MOP - Macanese Pataca
+MRU - Mauritanian Ouguiya
+MUR - Mauritian Rupee
+MVR - Maldivian Rufiyaa
+MWK - Malawian Kwacha
+MXN - Mexican Peso
+MYR - Malaysian Ringgit
+MZN - Mozambican Metical
+NAD - Namibian Dollar
+NGN - Nigerian Naira
+NIO - Nicaraguan Córdoba
+NOK - Norwegian Krone
+NPR - Nepalese Rupee
+NZD - New Zealand Dollar
+OMR - Omani Rial
+PAB - Panamanian Balboa
+PEN - Peruvian Nuevo Sol
+PGK - Papua New Guinean Kina
+PHP - Philippine Peso
+PKR - Pakistani Rupee
+PLN - Polish Zloty
+PYG - Paraguayan Guarani
+QAR - Qatari Rial
+RON - Romanian Leu
+RSD - Serbian Dinar
+RUB - Russian Ruble
+RWF - Rwandan Franc
+SAR - Saudi Riyal
+SBD - Solomon Islands Dollar
+SCR - Seychellois Rupee
+SDG - Sudanese Pound
+SEK - Swedish Krona
+SGD - Singapore Dollar
+SHP - Saint Helena Pound
+SLL - Sierra Leonean Leone
+SOS - Somali Shilling
+SRD - Surinamese Dollar
+SSP - South Sudanese Pound
+STD - São Tomé and Príncipe Dobra (pre -2018)
+STN - São Tomé and Príncipe Dobra
+SVC - Salvadoran Colón
+SYP - Syrian Pound
+SZL - Swazi Lilangeni
+THB - Thai Baht
+TJS - Tajikistani Somoni
+TMT - Turkmenistani Manat
+TND - Tunisian Dinar
+TOP - Tongan Pa'anga
+TRY - Turkish Lira
+TTD - Trinidad and Tobago Dollar
+TWD - New Taiwan Dollar
+TZS - Tanzanian Shilling
+UAH - Ukrainian Hryvnia
+UGX - Ugandan Shilling
+USD - United States Dollar
+UYU - Uruguayan Peso
+UZS - Uzbekistan Som
+VEF - Venezuelan Bolívar Fuerte (Old)
+VES - Venezuelan Bolívar Soberano
+VND - Vietnamese Dong
+VUV - Vanuatu Vatu
+WST - Samoan Tala
+XAF - CFA Franc BEAC
+XAG - Silver Ounce
+XAU - Gold Ounce
+XCD - East Caribbean Dollar
+XDR - Special Drawing Rights
+XOF - CFA Franc BCEAO
+XPD - Palladium Ounce
+XPF - CFP Franc
+XPT - Platinum Ounce
+YER - Yemeni Rial
+ZAR - South African Rand
+ZMW - Zambian Kwacha
+ZWL - Zimbabwean Dollar""",)
+            
+            #format text font and as read-only in text widget
+            text_widget.configure(font = (font, 11),fg='#377E57', state = 'disabled')
+            
+            #create 'back' button in new window to return to main window
+            newbutton = Button(newframe, text = "Back",font = (font, 11),  bg = "pink", fg = "black", activeforeground = "pink", activebackground = "black", command = lambda:newwin.destroy())
+            newbutton.place(relx = 0.76, rely = 0.82, relwidth = 0.14, relheight = 0.11)
+            newwin.mainloop()
+        
+        #create 'help' button in main window
+        self.help_button = Button(self, text='Help', fg='black',width=7, command=help)
+
+        #Placing, sorted by y-axis, of labels, entry box, dropdown menu, buttons, field
+        self.title_label.place(x=200, y=26, anchor='center')
+        self.date_label.place(x=200, y=100, anchor='center')
+        self.amount_label.place(x=200, y=150, anchor='center')
+        self.amount_entry.place(x=200, y=180, anchor='center')
+        self.base_currency_label.place(x=125, y=220, anchor='center')
+        self.destination_currency_label.place(x=275, y=220, anchor='center')
+        self.currency_combobox1.place(x=125, y=250, anchor='center')
+        self.currency_combobox2.place(x=275, y=250, anchor='center')
+        self.convert_button.place(x=200, y=300, anchor='center')
+        self.final_result.place(x=200, y=350, anchor='center')
+        self.clear_button.place(x=200, y=400, anchor='center')
+        self.help_button.place (x=200, y=400, anchor = 'center')
+
+
+    # Create clear function, to clear the amount field and final result field
+    def clear(self):
+        clear_entry = self.amount_entry.delete(0, END)
+        clear_result = self.final_result.config(text='')
+        return clear_entry, clear_result
+
+    # Create a function to perform
+    def processed(self):
+        try:
+            given_amount = float(self.amount_entry.get())
+            given_base_currency = self.currency_variable1.get()
+            given_des_currency = self.currency_variable2.get()
+            converted_amount = self.CurrencyConverter.convert(given_amount, given_base_currency, given_des_currency)
+            # Add comma every 3 numbers
+            given_amount = '{:,}'.format(given_amount)
+
+            self.final_result.config(text=f'{given_amount} {given_base_currency} = {converted_amount} {given_des_currency}')
+
+        # Create warning message box
+        except ValueError:
+            convert_error = messagebox.showwarning('WARNING!', 'Please Fill the Amount Field (integer only)!')
+            return convert_error
+
+
+if __name__ == '__main__':
+    converter = CurrencyConverter('https://api.exchangerate.host/latest')
+    Main(converter)
+    mainloop()
